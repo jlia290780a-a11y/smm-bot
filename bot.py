@@ -122,6 +122,7 @@ def adjust_text(adjustment: str, history: list) -> tuple:
 
 # ── Генерация картинки (gpt-image-1) ──────────────────
 def generate_image(topic: str) -> bytes:
+    import base64
     prompt = (
         f"Professional, warm lifestyle photo for a Telegram post about: {topic}. "
         "Style: modern, clean, inspiring. No text on image. "
@@ -133,9 +134,9 @@ def generate_image(topic: str) -> bytes:
         size="1024x1024",
         n=1
     )
-    url = r.data[0].url
-    with urllib.request.urlopen(url) as resp:
-        return resp.read()
+    # gpt-image-1 возвращает base64
+    image_data = r.data[0].b64_json
+    return base64.b64decode(image_data)
 
 # ── Редактирование фото ───────────────────────────────
 def apply_edits(photo_bytes: bytes, brightness: float, contrast: float) -> bytes:
