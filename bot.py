@@ -26,8 +26,8 @@ ANTHROPIC_API_KEY   = os.environ["ANTHROPIC_API_KEY"]
 OPENAI_API_KEY      = os.environ["OPENAI_API_KEY"]
 ALLOWED_USER_ID     = 778006973
 
-claude  = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-oai     = openai.OpenAI(api_key=OPENAI_API_KEY)
+claude = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+oai    = openai.OpenAI(api_key=OPENAI_API_KEY)
 scheduler = AsyncIOScheduler()
 
 SYSTEM_PROMPT = """Ты — СММ-ассистент Юлии, предпринимателя.
@@ -120,7 +120,7 @@ def adjust_text(adjustment: str, history: list) -> tuple:
     text = r.content[0].text
     return text, messages + [{"role": "assistant", "content": text}]
 
-# ── Генерация картинки DALL-E ─────────────────────────
+# ── Генерация картинки (gpt-image-1) ──────────────────
 def generate_image(topic: str) -> bytes:
     prompt = (
         f"Professional, warm lifestyle photo for a Telegram post about: {topic}. "
@@ -128,7 +128,7 @@ def generate_image(topic: str) -> bytes:
         "Suitable for a personal brand of a female entrepreneur."
     )
     r = oai.images.generate(
-        model="dall-e-3",
+        model="gpt-image-1",
         prompt=prompt,
         size="1024x1024",
         n=1
